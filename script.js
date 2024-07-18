@@ -155,8 +155,8 @@ const preguntas = [
     // Pregunta 24
     {
         pregunta: "Se presentan los posibles premios de un padre a su hijo en base a sus notas escolares. Indica el/los que le corresponde:\n int notaEstudiante = 95;\n if (notaEstudiante < 50 ) {\n System.out.println('Nada');\n } elseif (notaEstudiante > 95) {\n System.out.println('Laptop');\n } elseif (notaEstudiante <= 95) {\n System.out.println('Celular');\n } elseif (notaEstudiante == 95) {\n System.out.println('Drone');\n }",
-        respuestas: ["El código tiene un error lógico y de sintaxis en `elseif`. El resultado correcto después de corregirlo es `Celular`.", "Laptop", "Nada", "Drone"],
-        correcta: "El código tiene un error lógico y de sintaxis en `elseif`. El resultado correcto después de corregirlo es `Celular`."
+        respuestas: ["Celular", "Laptop", "Nada", "Drone"],
+        correcta: "Celular"
     },
     // Pregunta 25
     {
