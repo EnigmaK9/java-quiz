@@ -653,7 +653,6 @@ function actualizarConteo() {
             _checkBtn.classList.add('d-none');
             generarDiploma();
             descargarCSVUsuario();
-            descargarCSVAdministrador();
         }, 3000);
     } else {
         setTimeout(() => {
@@ -696,25 +695,6 @@ function descargarCSVUsuario() {
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", `respuestas_usuario_${username}.csv`);
-    document.body.appendChild(link); 
-    link.click();
-    document.body.removeChild(link);
-}
-
-function descargarCSVAdministrador() {
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Usuario,Pregunta,Respuesta Elegida,Respuesta Correcta\n";
-    const username = _usernameInput.value.trim();
-    respuestasUsuario.forEach(({ pregunta, respuesta, correctaText }) => {
-        const preguntaSanitizada = pregunta.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
-        const respuestaSanitizada = respuesta.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
-        const correctaSanitizada = correctaText.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
-        csvContent += `${username},${preguntaSanitizada},${respuestaSanitizada},${correctaSanitizada}\n`;
-    });
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "respuestas_administrador.csv");
     document.body.appendChild(link); 
     link.click();
     document.body.removeChild(link);
