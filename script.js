@@ -41,8 +41,8 @@ const preguntas = [
     // Pregunta 5
     {
         pregunta: "Indica el método en Java para obtener la suma de 1000:\n public static void main(String[] args) { String doscientos = '200'; System.out.println(método + 800); }",
-        respuestas: ["parseInt", "valueOf", "toString", "decode"],
-        correcta: "parseInt"
+        respuestas: ["Integer.parseInt(doscientos);", "valueOf", "toString", "decode"],
+        correcta: "Integer.parseInt(doscientos);"
     },
     // Pregunta 6
     {
@@ -263,8 +263,8 @@ const preguntas = [
     // Pregunta 42
     {
         pregunta: "Si deseas llevar un registro de regalos que has dado a cada amigo que tienes, ¿cuál sería la mejor manera de hacerlo para después acceder a la información?",
-        respuestas: ["Utilizar un `HashMap`:\n HashMap<String, ArrayList<String>> regalos = new HashMap<>();", "Utilizar un `ArrayList`", "Utilizar un `HashSet`", "Utilizar un `LinkedList`"],
-        correcta: "Utilizar un `HashMap`:\n HashMap<String, ArrayList<String>> regalos = new HashMap<>();"
+        respuestas: ["Crear una matriz bidimensional con arreglos de mis amigos y sus regalos", "Utilizar un `ArrayList`", "Utilizar un `HashSet`", "Utilizar un `LinkedList`"],
+        correcta: "Crear una matriz bidimensional con arreglos de mis amigos y sus regalos"
     },
     // Pregunta 43
     {
@@ -305,8 +305,8 @@ const preguntas = [
     // Pregunta 49
     {
         pregunta: "¿Se puede declarar una variable sin valor para asignarla posteriormente?",
-        respuestas: ["Sí, se puede:\n int variable;", "No, no se puede", "Depende del tipo de dato", "Depende del sistema operativo"],
-        correcta: "Sí, se puede:\n int variable;"
+        respuestas: ["Verdadero", "No, no se puede", "Depende del tipo de dato", "Depende del sistema operativo"],
+        correcta: "Verdadero"
     },
     // Pregunta 50
     {
@@ -413,20 +413,20 @@ const preguntas = [
     // Pregunta 67
     {
         pregunta: "¿Cuál es el proceso por el cual se crean objetos a partir de una clase?",
-        respuestas: ["Instanciación", "Inicialización", "Herencia", "Sobrescritura"],
-        correcta: "Instanciación"
+        respuestas: ["Instanciar", "Inicialización", "Herencia", "Sobrescritura"],
+        correcta: "Instanciar"
     },
     // Pregunta 68
     {
         pregunta: "¿Qué es el polimorfismo?",
-        respuestas: ["El polimorfismo es la capacidad de un objeto de tomar muchas formas. En Java, esto significa que una referencia de superclase puede apuntar a objetos de subclase.", "El polimorfismo es la capacidad de un objeto de heredar métodos y atributos de una superclase.", "El polimorfismo es la capacidad de un objeto de encapsular datos y métodos.", "El polimorfismo es la capacidad de un objeto de sobrescribir métodos de una superclase."],
-        correcta: "El polimorfismo es la capacidad de un objeto de tomar muchas formas. En Java, esto significa que una referencia de superclase puede apuntar a objetos de subclase."
+        respuestas: ["Es la capacidad que tienen los objetos de una clase en ofrecer respuestas distintas e independiente en función de los parámetros utilizados durante su invocación. Alude al modo en que se pueden crear y utilizar dos o más métodos con el mismo nombre para ejecutar funciones diferentes.", "El polimorfismo es la capacidad de un objeto de heredar métodos y atributos de una superclase.", "El polimorfismo es la capacidad de un objeto de encapsular datos y métodos.", "El polimorfismo es la capacidad de un objeto de sobrescribir métodos de una superclase."],
+        correcta: "Es la capacidad que tienen los objetos de una clase en ofrecer respuestas distintas e independiente en función de los parámetros utilizados durante su invocación. Alude al modo en que se pueden crear y utilizar dos o más métodos con el mismo nombre para ejecutar funciones diferentes."
     },
     // Pregunta 69
     {
         pregunta: "¿Qué es un atributo?",
-        respuestas: ["Un atributo es una variable que pertenece a una clase o a un objeto.", "Un atributo es un método que pertenece a una clase o a un objeto.", "Un atributo es una clase que pertenece a un paquete.", "Un atributo es una instancia de una clase."],
-        correcta: "Un atributo es una variable que pertenece a una clase o a un objeto."
+        respuestas: ["Son las carácteristicas individuales que diferencian un objeto de otro y determinan su apariencia, estado u otras cualidades.", "Un atributo es un método que pertenece a una clase o a un objeto.", "Un atributo es una clase que pertenece a un paquete.", "Un atributo es una instancia de una clase."],
+        correcta: "Son las carácteristicas individuales que diferencian un objeto de otro y determinan su apariencia, estado u otras cualidades."
     },
     // Pregunta 70
     {
@@ -497,8 +497,8 @@ const preguntas = [
     // Pregunta 81
     {
         pregunta: "Es el método de la librería java.io para llenar información en un archivo *.txt",
-        respuestas: ["`FileWriter` y `BufferedWriter` pueden ser utilizados.", "`PrintWriter` y `FileOutputStream` pueden ser utilizados.", "`BufferedReader` y `FileInputStream` pueden ser utilizados.", "`Scanner` y `FileReader` pueden ser utilizados."],
-        correcta: "`FileWriter` y `BufferedWriter` pueden ser utilizados."
+        respuestas: ["`FileWriter` y `BufferedWriter` pueden ser utilizados. Write", "`PrintWriter` y `FileOutputStream` pueden ser utilizados.", "`BufferedReader` y `FileInputStream` pueden ser utilizados.", "`Scanner` y `FileReader` pueden ser utilizados."],
+        correcta: "`FileWriter` y `BufferedWriter` pueden ser utilizados. Write"
     },
     // Pregunta 82
     {
