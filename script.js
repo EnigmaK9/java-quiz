@@ -16,7 +16,6 @@ const successSound = new Audio('sounds/success.mp3');
 let correctAnswer = "", correctScore = askedCount = 0, totalQuestion = 10;
 let respuestasUsuario = [];
 let preguntasSeleccionadas = [];
-let username = "";
 
 const preguntas = [
     // Pregunta 1
@@ -513,7 +512,6 @@ const preguntas = [
     }
 ];
 
-// Selecciona 10 preguntas al azar de la lista de preguntas
 function seleccionarPreguntas() {
     const preguntasShuffled = preguntas.sort(() => 0.5 - Math.random());
     preguntasSeleccionadas = preguntasShuffled.slice(0, 10);
@@ -557,15 +555,15 @@ function listenersEventos() {
     _checkBtn.addEventListener('click', comprobarRespuesta);
     _playAgainBtn.addEventListener('click', reiniciarJuego);
     document.addEventListener('keydown', manejarTeclado);
-    _startQuizBtn.addEventListener('click', iniciarJuego);
+    _startQuizBtn.addEventListener('click', startQuiz);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     listenersEventos();
 });
 
-function iniciarJuego() {
-    username = _usernameInput.value.trim();
+function startQuiz() {
+    const username = _usernameInput.value.trim();
     if (username) {
         _userForm.classList.add('d-none');
         _quizContainer.classList.remove('d-none');
@@ -629,7 +627,6 @@ function comprobarRespuesta() {
             correctScore++;
             successSound.play();
             _result.innerHTML = `<p><i class="fas fa-check"></i>¡Respuesta Correcta!</p>`;
-            setTimeout(cargarPregunta, 1000);
         } else {
             errorSound.play();
             _result.innerHTML = `<p><i class="fas fa-times"></i>¡Respuesta Incorrecta!</p> <small><b>Respuesta Correcta: </b>${correctAnswer}</small>`;
@@ -638,7 +635,6 @@ function comprobarRespuesta() {
                     opcion.classList.add('correct');
                 }
             });
-            setTimeout(cargarPregunta, 2000);
         }
         actualizarConteo();
     } else {
@@ -655,14 +651,15 @@ function actualizarConteo() {
             _result.innerHTML += `<p>Tu puntuación es ${correctScore} de ${totalQuestion}.</p>`;
             _playAgainBtn.classList.remove('d-none');
             _checkBtn.classList.add('d-none');
-            descargarExcel();
-            generarDiplomaPDF();
-            guardarDatosEnBD();
+            generarDiploma();
+            descargarCSVUsuario();
+            descargarCSVAdministrador();
         }, 3000);
     } else {
         setTimeout(() => {
             _checkBtn.disabled = false;
-        }, 1000);
+            cargarPregunta();
+        }, 2000); // Tiempo duplicado para mostrar la respuesta correcta
     }
 }
 
@@ -685,46 +682,61 @@ function reiniciarJuego() {
     }
 }
 
-function descargarExcel() {
-    const wb = XLSX.utils.book_new();
-    const ws_data = [['Pregunta', 'Respuesta Elegida', 'Respuesta Correcta']];
+function descargarCSVUsuario() {
+    const username = _usernameInput.value.trim();
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Pregunta,Respuesta Elegida,Respuesta Correcta\n";
     respuestasUsuario.forEach(({ pregunta, respuesta, correctaText }) => {
-        ws_data.push([pregunta, respuesta, correctaText]);
+        const preguntaSanitizada = pregunta.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
+        const respuestaSanitizada = respuesta.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
+        const correctaSanitizada = correctaText.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
+        csvContent += `${preguntaSanitizada},${respuestaSanitizada},${correctaSanitizada}\n`;
     });
-    const ws = XLSX.utils.aoa_to_sheet(ws_data);
-    XLSX.utils.book_append_sheet(wb, ws, 'Respuestas');
-    XLSX.writeFile(wb, `resultados_${username}.xlsx`);
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `respuestas_usuario_${username}.csv`);
+    document.body.appendChild(link); 
+    link.click();
+    document.body.removeChild(link);
 }
 
-function generarDiplomaPDF() {
+function descargarCSVAdministrador() {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Usuario,Pregunta,Respuesta Elegida,Respuesta Correcta\n";
+    const username = _usernameInput.value.trim();
+    respuestasUsuario.forEach(({ pregunta, respuesta, correctaText }) => {
+        const preguntaSanitizada = pregunta.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
+        const respuestaSanitizada = respuesta.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
+        const correctaSanitizada = correctaText.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
+        csvContent += `${username},${preguntaSanitizada},${respuestaSanitizada},${correctaSanitizada}\n`;
+    });
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "respuestas_administrador.csv");
+    document.body.appendChild(link); 
+    link.click();
+    document.body.removeChild(link);
+}
+
+function generarDiploma() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    doc.setFontSize(20);
-    doc.text('Certificado de Java', 105, 30, null, null, 'center');
+    const username = _usernameInput.value.trim();
+    const score = `${correctScore} / ${totalQuestion}`;
+
+    doc.setFontSize(22);
+    doc.text("Certificado de Java", 105, 40, null, null, "center");
+
     doc.setFontSize(16);
-    doc.text(`Nombre del Participante: ${username}`, 105, 50, null, null, 'center');
-    doc.text(`Puntuación: ${correctScore} de ${totalQuestion}`, 105, 70, null, null, 'center');
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 105, 90, null, null, 'center');
-    doc.text(`Firmado por: EnigmaK9`, 105, 110, null, null, 'center');
+    doc.text(`Otorgado a: ${username}`, 105, 60, null, null, "center");
+    doc.text(`Por haber completado el cuestionario de Java`, 105, 80, null, null, "center");
+    doc.text(`Con una puntuación de: ${score}`, 105, 100, null, null, "center");
 
-    doc.save('diploma.pdf');
-}
+    doc.setFontSize(12);
+    doc.text("Firmado por EnigmaK9", 105, 120, null, null, "center");
 
-async function guardarDatosEnBD() {
-    const db = await openDB();
-    const tx = db.transaction('quizResults', 'readwrite');
-    const store = tx.objectStore('quizResults');
-    store.put({ username, correctScore, totalQuestion, date: new Date().toLocaleDateString() });
-    await tx.done;
-}
-
-async function openDB() {
-    const db = await idb.openDB('quizDB', 1, {
-        upgrade(db) {
-            const store = db.createObjectStore('quizResults', { keyPath: 'id', autoIncrement: true });
-            store.createIndex('username', 'username');
-        },
-    });
-    return db;
+    doc.save(`certificado_${username}.pdf`);
 }
