@@ -5,6 +5,10 @@ const _playAgainBtn = document.getElementById('play-again');
 const _result = document.getElementById('result');
 const _correctScore = document.getElementById('correct-score');
 const _totalQuestion = document.getElementById('total-question');
+const _usernameInput = document.getElementById('username');
+const _startQuizBtn = document.getElementById('start-quiz');
+const _userForm = document.getElementById('user-form');
+const _quizContainer = document.getElementById('quiz-container');
 
 const errorSound = new Audio('sounds/error.mp3');
 const successSound = new Audio('sounds/success.mp3');
@@ -12,7 +16,7 @@ const successSound = new Audio('sounds/success.mp3');
 let correctAnswer = "", correctScore = askedCount = 0, totalQuestion = 10;
 let respuestasUsuario = [];
 let preguntasSeleccionadas = [];
-
+let username = "";
 
 const preguntas = [
     // Pregunta 1
@@ -553,16 +557,27 @@ function listenersEventos() {
     _checkBtn.addEventListener('click', comprobarRespuesta);
     _playAgainBtn.addEventListener('click', reiniciarJuego);
     document.addEventListener('keydown', manejarTeclado);
+    _startQuizBtn.addEventListener('click', iniciarJuego);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    inicializarJuego();
+    listenersEventos();
 });
+
+function iniciarJuego() {
+    username = _usernameInput.value.trim();
+    if (username) {
+        _userForm.classList.add('d-none');
+        _quizContainer.classList.remove('d-none');
+        inicializarJuego();
+    } else {
+        alert("Por favor, introduce tu nombre.");
+    }
+}
 
 function inicializarJuego() {
     seleccionarPreguntas();
     cargarPregunta();
-    listenersEventos();
     actualizarUI();
 }
 
@@ -614,6 +629,7 @@ function comprobarRespuesta() {
             correctScore++;
             successSound.play();
             _result.innerHTML = `<p><i class="fas fa-check"></i>¡Respuesta Correcta!</p>`;
+            setTimeout(cargarPregunta, 1000);
         } else {
             errorSound.play();
             _result.innerHTML = `<p><i class="fas fa-times"></i>¡Respuesta Incorrecta!</p> <small><b>Respuesta Correcta: </b>${correctAnswer}</small>`;
@@ -622,6 +638,7 @@ function comprobarRespuesta() {
                     opcion.classList.add('correct');
                 }
             });
+            setTimeout(cargarPregunta, 2000);
         }
         actualizarConteo();
     } else {
@@ -639,12 +656,12 @@ function actualizarConteo() {
             _playAgainBtn.classList.remove('d-none');
             _checkBtn.classList.add('d-none');
             descargarExcel();
-            generarDiploma();
+            generarDiplomaPDF();
+            guardarDatosEnBD();
         }, 3000);
     } else {
         setTimeout(() => {
             _checkBtn.disabled = false;
-            cargarPregunta();
         }, 1000);
     }
 }
@@ -670,26 +687,44 @@ function reiniciarJuego() {
 
 function descargarExcel() {
     const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(respuestasUsuario.map(r => ({
-        Pregunta: r.pregunta,
-        'Respuesta Elegida': r.respuesta,
-        'Respuesta Correcta': r.correctaText
-    })));
-    XLSX.utils.book_append_sheet(wb, ws, 'Resultados');
-    XLSX.writeFile(wb, 'resultados_quiz.xlsx');
+    const ws_data = [['Pregunta', 'Respuesta Elegida', 'Respuesta Correcta']];
+    respuestasUsuario.forEach(({ pregunta, respuesta, correctaText }) => {
+        ws_data.push([pregunta, respuesta, correctaText]);
+    });
+    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+    XLSX.utils.book_append_sheet(wb, ws, 'Respuestas');
+    XLSX.writeFile(wb, `resultados_${username}.xlsx`);
 }
 
-function generarDiploma() {
+function generarDiplomaPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    doc.setFontSize(22);
-    doc.text('Certificado de Logro', 105, 30, null, null, 'center');
+    doc.setFontSize(20);
+    doc.text('Certificado de Java', 105, 30, null, null, 'center');
     doc.setFontSize(16);
-    doc.text(`Nombre del Participante:`, 105, 50, null, null, 'center');
+    doc.text(`Nombre del Participante: ${username}`, 105, 50, null, null, 'center');
     doc.text(`Puntuación: ${correctScore} de ${totalQuestion}`, 105, 70, null, null, 'center');
     doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 105, 90, null, null, 'center');
-    doc.text(`Firma:`, 105, 110, null, null, 'center');
+    doc.text(`Firmado por: EnigmaK9`, 105, 110, null, null, 'center');
 
     doc.save('diploma.pdf');
+}
+
+async function guardarDatosEnBD() {
+    const db = await openDB();
+    const tx = db.transaction('quizResults', 'readwrite');
+    const store = tx.objectStore('quizResults');
+    store.put({ username, correctScore, totalQuestion, date: new Date().toLocaleDateString() });
+    await tx.done;
+}
+
+async function openDB() {
+    const db = await idb.openDB('quizDB', 1, {
+        upgrade(db) {
+            const store = db.createObjectStore('quizResults', { keyPath: 'id', autoIncrement: true });
+            store.createIndex('username', 'username');
+        },
+    });
+    return db;
 }
