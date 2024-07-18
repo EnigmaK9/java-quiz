@@ -517,6 +517,7 @@ function seleccionarPreguntas() {
 const preguntasRealizadas = new Set();
 
 function cargarPregunta() {
+    // Verificar si se han realizado todas las preguntas seleccionadas
     if (preguntasRealizadas.size >= preguntasSeleccionadas.length) {
         _result.innerHTML = "<p>¡Se han realizado todas las preguntas disponibles!</p>";
         _playAgainBtn.classList.remove('d-none');
@@ -524,29 +525,34 @@ function cargarPregunta() {
         return;
     }
 
+    // Seleccionar una nueva pregunta al azar que no haya sido realizada
     let preguntaActual;
-    let intentos = 0;
-    const maxIntentos = 10;
-
     do {
         preguntaActual = preguntasSeleccionadas[Math.floor(Math.random() * preguntasSeleccionadas.length)];
-        intentos++;
-        if (intentos > maxIntentos) {
-            _result.innerHTML = "<p>Error: No se pudo cargar una nueva pregunta. Intenta reiniciar el juego.</p>";
-            _playAgainBtn.classList.remove('d-none');
-            _checkBtn.classList.add('d-none');
-            return;
-        }
     } while (preguntasRealizadas.has(preguntaActual.pregunta));
 
+    // Agregar la pregunta seleccionada al conjunto de preguntas realizadas
     preguntasRealizadas.add(preguntaActual.pregunta);
 
+    // Mostrar la pregunta y las opciones de respuesta
     _question.innerHTML = preguntaActual.pregunta;
     const opcionesReordenadas = reordenarOpciones(preguntaActual.respuestas);
     _options.innerHTML = opcionesReordenadas.map((respuesta, index) => `<li data-index="${index + 1}">${index + 1}. <span>${respuesta}</span></li>`).join('');
     correctAnswer = preguntaActual.correcta;
+
+    // Permitir la selección de opciones
     seleccionarOpcion();
 }
+
+function reordenarOpciones(opciones) {
+    const opcionesCopia = [...opciones];
+    for (let i = opcionesCopia.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [opcionesCopia[i], opcionesCopia[j]] = [opcionesCopia[j], opcionesCopia[i]];
+    }
+    return opcionesCopia;
+}
+
 
 function reordenarOpciones(opciones) {
     const opcionesCopia = [...opciones];
