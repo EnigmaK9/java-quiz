@@ -13,6 +13,7 @@ let correctAnswer = "", correctScore = askedCount = 0, totalQuestion = 10;
 let respuestasUsuario = [];
 let preguntasSeleccionadas = [];
 
+
 const preguntas = [
     // Pregunta 1
     {
@@ -517,7 +518,6 @@ function seleccionarPreguntas() {
 const preguntasRealizadas = new Set();
 
 function cargarPregunta() {
-    // Verificar si se han realizado todas las preguntas seleccionadas
     if (preguntasRealizadas.size >= preguntasSeleccionadas.length) {
         _result.innerHTML = "<p>¡Se han realizado todas las preguntas disponibles!</p>";
         _playAgainBtn.classList.remove('d-none');
@@ -525,34 +525,20 @@ function cargarPregunta() {
         return;
     }
 
-    // Seleccionar una nueva pregunta al azar que no haya sido realizada
     let preguntaActual;
     do {
         preguntaActual = preguntasSeleccionadas[Math.floor(Math.random() * preguntasSeleccionadas.length)];
     } while (preguntasRealizadas.has(preguntaActual.pregunta));
 
-    // Agregar la pregunta seleccionada al conjunto de preguntas realizadas
     preguntasRealizadas.add(preguntaActual.pregunta);
 
-    // Mostrar la pregunta y las opciones de respuesta
     _question.innerHTML = preguntaActual.pregunta;
     const opcionesReordenadas = reordenarOpciones(preguntaActual.respuestas);
     _options.innerHTML = opcionesReordenadas.map((respuesta, index) => `<li data-index="${index + 1}">${index + 1}. <span>${respuesta}</span></li>`).join('');
     correctAnswer = preguntaActual.correcta;
 
-    // Permitir la selección de opciones
     seleccionarOpcion();
 }
-
-function reordenarOpciones(opciones) {
-    const opcionesCopia = [...opciones];
-    for (let i = opcionesCopia.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [opcionesCopia[i], opcionesCopia[j]] = [opcionesCopia[j], opcionesCopia[i]];
-    }
-    return opcionesCopia;
-}
-
 
 function reordenarOpciones(opciones) {
     const opcionesCopia = [...opciones];
@@ -631,7 +617,6 @@ function comprobarRespuesta() {
         } else {
             errorSound.play();
             _result.innerHTML = `<p><i class="fas fa-times"></i>¡Respuesta Incorrecta!</p> <small><b>Respuesta Correcta: </b>${correctAnswer}</small>`;
-            // Resaltar la opción correcta
             _options.querySelectorAll('li').forEach(opcion => {
                 if (opcion.querySelector('span').textContent === correctAnswer) {
                     opcion.classList.add('correct');
@@ -653,7 +638,8 @@ function actualizarConteo() {
             _result.innerHTML += `<p>Tu puntuación es ${correctScore} de ${totalQuestion}.</p>`;
             _playAgainBtn.classList.remove('d-none');
             _checkBtn.classList.add('d-none');
-            descargarCSV();
+            descargarExcel();
+            generarDiploma();
         }, 3000);
     } else {
         setTimeout(() => {
@@ -682,20 +668,28 @@ function reiniciarJuego() {
     }
 }
 
-function descargarCSV() {
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Pregunta,Respuesta Elegida,Respuesta Correcta\n";
-    respuestasUsuario.forEach(({ pregunta, respuesta, correctaText }) => {
-        const preguntaSanitizada = pregunta.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
-        const respuestaSanitizada = respuesta.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
-        const correctaSanitizada = correctaText.replace(/,/g, ' ').replace(/(\r\n|\n|\r)/gm, " ");
-        csvContent += `${preguntaSanitizada},${respuestaSanitizada},${correctaSanitizada}\n`;
-    });
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "resultados_quiz.csv");
-    document.body.appendChild(link); // Required for FF
-    link.click();
-    document.body.removeChild(link);
+function descargarExcel() {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(respuestasUsuario.map(r => ({
+        Pregunta: r.pregunta,
+        'Respuesta Elegida': r.respuesta,
+        'Respuesta Correcta': r.correctaText
+    })));
+    XLSX.utils.book_append_sheet(wb, ws, 'Resultados');
+    XLSX.writeFile(wb, 'resultados_quiz.xlsx');
+}
+
+function generarDiploma() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(22);
+    doc.text('Certificado de Logro', 105, 30, null, null, 'center');
+    doc.setFontSize(16);
+    doc.text(`Nombre del Participante:`, 105, 50, null, null, 'center');
+    doc.text(`Puntuación: ${correctScore} de ${totalQuestion}`, 105, 70, null, null, 'center');
+    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 105, 90, null, null, 'center');
+    doc.text(`Firma:`, 105, 110, null, null, 'center');
+
+    doc.save('diploma.pdf');
 }
