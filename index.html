@@ -4,36 +4,46 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Juego de Preguntas - Proyecto API</title>
+    <title>Certificate en Java</title>
     <link
-      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
-      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
+      rel="stylesheet"
     />
-    <link rel="stylesheet" href="main.css" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="flex">
-    <div class="wrapper">
-      <div class="quiz-container">
-        <div class="quiz-head">
-          <h1 class="quiz-title">Juego de Preguntas</h1>
-          <div class="quiz-score flex">
-            <span id="correct-score"></span>/<span id="total-question"></span>
-          </div>
+  <body class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="container text-center">
+      <div class="mb-4">
+        <h1 class="quiz-title">Certificate en Java</h1>
+        <div class="quiz-score" id="score">
+          <span id="correct-score">0</span>/<span id="total-question">10</span>
         </div>
-        <div class="quiz-body">
-          <h2 class="quiz-question" id="question"><!-- Pregunta aquí --></h2>
-          <ul class="quiz-options">
-            <!-- Opciones aquí -->
-          </ul>
-          <div id="result"></div>
-        </div>
-        <div class="quiz-foot">
-          <button type="button" id="check-answer">Comprobar Respuesta</button>
-          <button type="button" id="play-again">¡Jugar de Nuevo!</button>
-        </div>
+      </div>
+      <div class="mb-4">
+        <h2 class="quiz-question" id="question"></h2>
+        <ul class="quiz-options">
+          <!-- Opciones generadas dinámicamente -->
+        </ul>
+      </div>
+      <div id="result" class="result">
+        <i class="fas fa-info-circle"></i>
+        <span class="result-text"></span>
+      </div>
+      <div class="d-flex justify-content-center mt-4">
+        <button type="button" id="check-answer" class="btn btn-primary mx-2">
+          Comprobar Respuesta
+        </button>
+        <button
+          type="button"
+          id="play-again"
+          class="btn btn-primary mx-2 d-none"
+        >
+          ¡Jugar de Nuevo!
+        </button>
       </div>
     </div>
     <script src="script.js"></script>
