@@ -710,21 +710,45 @@ function descargarCSVUsuario() {
 
 function generarDiploma() {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    const doc = new jsPDF('landscape'); // Orientación horizontal
 
     const username = _usernameInput.value.trim();
     const score = `${correctScore} / ${totalQuestion}`;
 
-    doc.setFontSize(22);
-    doc.text("Certificado de Java", 105, 40, null, null, "center");
-
+    // Agregar un placeholder para el logo
     doc.setFontSize(16);
-    doc.text(`Otorgado a: ${username}`, 105, 60, null, null, "center");
-    doc.text(`Por haber completado el cuestionario de Java`, 105, 80, null, null, "center");
-    doc.text(`Con una puntuación de: ${score}`, 105, 100, null, null, "center");
+    doc.text("Logo Placeholder", 20, 20);
 
-    doc.setFontSize(12);
-    doc.text("Firmado por EnigmaK9", 105, 120, null, null, "center");
+    // Título del diploma
+    doc.setFontSize(30);
+    doc.text("Certificado de Java", 148, 40, null, null, "center");
+
+    // Detalles del diploma
+    doc.setFontSize(18);
+    doc.text(`Otorgado a:`, 148, 60, null, null, "center");
+
+    doc.setFontSize(22);
+    doc.text(`${username}`, 148, 80, null, null, "center");
+
+    doc.setFontSize(18);
+    doc.text(`Por haber obtenido una excelente calificación en el cuestionario de Java`, 148, 100, null, null, "center");
+
+    doc.setFontSize(18);
+    doc.text(`Con una puntuación de: ${score}`, 148, 120, null, null, "center");
+
+    // Firmado
+    doc.setFontSize(14);
+    doc.text("Firmado por EnigmaK9", 148, 140, null, null, "center");
+
+    // Fecha
+    const date = new Date();
+    const formattedDate = date.toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+    doc.text(`Fecha: ${formattedDate}`, 148, 160, null, null, "center");
 
     doc.save(`certificado_${username}.pdf`);
 }
+
