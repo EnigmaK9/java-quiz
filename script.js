@@ -45,9 +45,10 @@ const preguntas = [
     // Pregunta 5
     {
         pregunta: "Indica el método en Java para obtener la suma de 1000:\n public static void main(String[] args) { String doscientos = '200'; System.out.println(método + 800); }",
-        respuestas: ["Integer.parseInt(doscientos);", "valueOf", "toString", "decode"],
-        correcta: "Integer.parseInt(doscientos);"
-    },
+        respuestas: ["Integer.parseInt(doscientos)", "Integer.valueOf(doscientos)", "Integer.toString(doscientos)", "Integer.decode(doscientos)"],
+        correcta: "Integer.parseInt(doscientos)"
+    },      
+
     // Pregunta 6
     {
         pregunta: "¿Cuál es el algoritmo que pasa elementos de una subLista desordenada a una subLista ordenada?",
@@ -207,8 +208,8 @@ const preguntas = [
     // Pregunta 32
     {
         pregunta: "¿Qué es un objeto?",
-        respuestas: ["Un objeto es una instancia de una clase que encapsula datos y funcionalidades relacionadas", "Un tipo de dato", "Una variable", "Un método"],
-        correcta: "Un objeto es una instancia de una clase que encapsula datos y funcionalidades relacionadas"
+        respuestas: ["Un objeto es una instancia de una clase que encapsula datos y funcionalidades relacionadas para poder ser utilizado en programación", "Un objeto es un tipo de dato en programación que se utiliza para almacenar valores específicos y puede contener datos variados", "Un objeto es una variable que se utiliza para guardar información y se define por su tipo de dato y su valor en el programa", "Un objeto es un método que realiza una acción específica dentro de un programa y puede ser invocado por otras partes del código"],
+        correcta: "Un objeto es una instancia de una clase que encapsula datos y funcionalidades relacionadas para poder ser utilizado en programación"
     },
     // Pregunta 33
     {
@@ -225,8 +226,8 @@ const preguntas = [
     // Pregunta 35
     {
         pregunta: "¿Qué es una clase?",
-        respuestas: ["Una clase es una plantilla o blueprint que define las variables y los métodos comunes a todos los objetos de un cierto tipo", "Un tipo de dato", "Un objeto", "Un método"],
-        correcta: "Una clase es una plantilla o blueprint que define las variables y los métodos comunes a todos los objetos de un cierto tipo"
+        respuestas: ["Es una plantilla que define variables y métodos comunes a objetos", "Es un tipo de dato específico en programación", "Es una instancia única de un tipo de dato", "Es una función que realiza una tarea particular"],
+        correcta: "Es una plantilla que define variables y métodos comunes a objetos"
     },
     // Pregunta 36
     {
@@ -314,9 +315,9 @@ const preguntas = [
     },
     // Pregunta 50
     {
-        pregunta: "¿Cuáles son las características de las siguientes variables?\n a) Variable local\n b) Variable de instancia\n c) Variable estática",
-        respuestas: ["a) Es declarada dentro de un método y solo es accesible dentro de ese método.\n b) Es declarada dentro de una clase, pero fuera de cualquier método, y es accesible por todos los métodos de la clase.\n c) Es declarada con la palabra clave `static` y es compartida entre todas las instancias de la clase.", "a) Es declarada dentro de una clase y solo es accesible dentro de esa clase.\n b) Es declarada dentro de un método y es accesible por todos los métodos de la clase.\n c) Es declarada con la palabra clave `static` y es compartida entre todas las instancias de la clase.", "a) Es declarada dentro de una clase y solo es accesible dentro de esa clase.\n b) Es declarada dentro de un método y es accesible por todos los métodos de la clase.\n c) Es declarada con la palabra clave `static` y es compartida entre todas las instancias de la clase.", "Ninguna de las anteriores"],
-        correcta: "a) Es declarada dentro de un método y solo es accesible dentro de ese método.\n b) Es declarada dentro de una clase, pero fuera de cualquier método, y es accesible por todos los métodos de la clase.\n c) Es declarada con la palabra clave `static` y es compartida entre todas las instancias de la clase."
+        pregunta: "Relaciona las características de los tipos de variables en Java:\n a) Variable local\n b) Variable de instancia\n c) Variable estática",
+        respuestas: ["a - 2; b - 3; c - 1", "a - 3; b - 1; c - 2", "a - 1; b - 2; c - 3", "a - 3; b - 2; c - 1"],
+        correcta: "a - 2; b - 3; c - 1"
     },
     // Pregunta 51
     {
@@ -333,8 +334,8 @@ const preguntas = [
     // Pregunta 53
     {
         pregunta: "En la siguiente declaración de un método, ¿qué significa el tipo de dato “float” cuando se coloca en esa posición?\n public static float main(){\n // bloque de código\n }",
-        respuestas: ["Significa que el método `main` devolverá un valor de tipo `float`", "Significa que el método `main` no devolverá ningún valor", "Significa que el método `main` devolverá un valor de tipo `int`", "Significa que el método `main` devolverá un valor de tipo `double`"],
-        correcta: "Significa que el método `main` devolverá un valor de tipo `float`"
+        respuestas: ["Indica que el método `main` puede devolver un valor flotante", "Indica que el método `main` no devuelve ningún valor", "Indica que el método `main` devuelve un número entero", "Indica que el método `main` devuelve un número de punto flotante"],
+        correcta: "Indica que el método `main` puede devolver un valor flotante"
     },
     // Pregunta 54
     {
@@ -391,6 +392,7 @@ const preguntas = [
         correcta: "Compra. Sale de la tienda"
     },
     // Pregunta 63
+
     {
         pregunta: "¿Cuál es un tipo de declaración de variable no válida en Java?",
         respuestas: ["int 4variable;", "int variable4;", "int variable;", "int _variable;"],
@@ -423,15 +425,16 @@ const preguntas = [
     // Pregunta 68
     {
         pregunta: "¿Qué es el polimorfismo?",
-        respuestas: ["Es la capacidad que tienen los objetos de una clase en ofrecer respuestas distintas e independiente en función de los parámetros utilizados durante su invocación. Alude al modo en que se pueden crear y utilizar dos o más métodos con el mismo nombre para ejecutar funciones diferentes.", "El polimorfismo es la capacidad de un objeto de heredar métodos y atributos de una superclase.", "El polimorfismo es la capacidad de un objeto de encapsular datos y métodos.", "El polimorfismo es la capacidad de un objeto de sobrescribir métodos de una superclase."],
-        correcta: "Es la capacidad que tienen los objetos de una clase en ofrecer respuestas distintas e independiente en función de los parámetros utilizados durante su invocación. Alude al modo en que se pueden crear y utilizar dos o más métodos con el mismo nombre para ejecutar funciones diferentes."
+        respuestas: ["Es la capacidad de objetos de una clase de ofrecer distintas respuestas según los parámetros", "Es la capacidad de un objeto de heredar métodos y atributos de una clase base", "Es la capacidad de un objeto de encapsular datos y métodos", "Es la capacidad de un objeto de sobrescribir métodos de una clase base"],
+        correcta: "Es la capacidad de objetos de una clase de ofrecer distintas respuestas según los parámetros"
     },
     // Pregunta 69
     {
         pregunta: "¿Qué es un atributo?",
-        respuestas: ["Son las carácteristicas individuales que diferencian un objeto de otro y determinan su apariencia, estado u otras cualidades.", "Un atributo es un método que pertenece a una clase o a un objeto.", "Un atributo es una clase que pertenece a un paquete.", "Un atributo es una instancia de una clase."],
-        correcta: "Son las carácteristicas individuales que diferencian un objeto de otro y determinan su apariencia, estado u otras cualidades."
+        respuestas: ["Son las características individuales que diferencian un objeto de otro", "Es un método que pertenece a una clase o a un objeto", "Es una clase que pertenece a un paquete", "Es una instancia de una clase"],
+        correcta: "Son las características individuales que diferencian un objeto de otro"
     },
+
     // Pregunta 70
     {
         pregunta: "¿Cuál es el resultado del siguiente código en Java?\n String numero1 = '120';\n String numero2 = '205';\n System.out.println(numero1 + numero2);",
@@ -495,14 +498,14 @@ const preguntas = [
     // Pregunta 80
     {
         pregunta: "Indica la salida del siguiente código usando Arrays:\n int[] edades = {8, 9, 10, 11, 12};\n System.out.println(edades[5]);",
-        respuestas: ["El código lanzará una excepción `ArrayIndexOutOfBoundsException` ya que el índice 5 está fuera del rango del arreglo.", "El código imprimirá `12`.", "El código imprimirá `0`.", "El código lanzará una excepción `NullPointerException`."],
-        correcta: "El código lanzará una excepción `ArrayIndexOutOfBoundsException` ya que el índice 5 está fuera del rango del arreglo."
+        respuestas: ["El código lanzará una ArrayIndexOutOfBoundsException", "El código imprimirá `12` en la consola", "El código imprimirá `0` en la consola", "El código lanzará una NullPointerException"],
+        correcta: "El código lanzará una ArrayIndexOutOfBoundsException"
     },
     // Pregunta 81
     {
-        pregunta: "Es el método de la librería java.io para llenar información en un archivo *.txt",
-        respuestas: ["`FileWriter` y `BufferedWriter` pueden ser utilizados. Write", "`PrintWriter` y `FileOutputStream` pueden ser utilizados.", "`BufferedReader` y `FileInputStream` pueden ser utilizados.", "`Scanner` y `FileReader` pueden ser utilizados."],
-        correcta: "`FileWriter` y `BufferedWriter` pueden ser utilizados. Write"
+        pregunta: "¿Cuál es el método de la librería java.io para escribir información en un archivo *.txt?",
+        respuestas: ["`FileWriter` y `BufferedWriter` usan el método write()", "`FileWriter` y `BufferedWriter` usan el método append()", "`PrintWriter` y `FileOutputStream` usan el método writeData()", "`BufferedReader` y `FileInputStream` usan el método insertText()"],
+        correcta: "`FileWriter` y `BufferedWriter` usan el método write()"
     },
     // Pregunta 82
     {
@@ -651,16 +654,21 @@ function actualizarConteo() {
             _result.innerHTML += `<p>Tu puntuación es ${correctScore} de ${totalQuestion}.</p>`;
             _playAgainBtn.classList.remove('d-none');
             _checkBtn.classList.add('d-none');
-            generarDiploma();
+            if (correctScore >= 8) {
+                generarDiploma();
+            } else {
+                alert("Eres un burrazo. Vuelve a intentarlo y saca más de 8");
+            }
             descargarCSVUsuario();
-        }, 3000);
+        }, 4000); // Mostrar la respuesta correcta durante 4 segundos
     } else {
         setTimeout(() => {
             _checkBtn.disabled = false;
             cargarPregunta();
-        }, 2000); // Tiempo duplicado para mostrar la respuesta correcta
+        }, 4000); // Mostrar la respuesta correcta durante 4 segundos
     }
 }
+
 
 function setConteo() {
     _totalQuestion.textContent = totalQuestion;
