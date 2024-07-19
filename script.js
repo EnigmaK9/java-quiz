@@ -655,9 +655,15 @@ function actualizarConteo() {
             _playAgainBtn.classList.remove('d-none');
             _checkBtn.classList.add('d-none');
             if (correctScore >= 8) {
-                generarDiploma();
+                fetchImageAsBase64('java.png')
+                    .then(logoBase64 => {
+                        generarDiploma(logoBase64);
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar la imagen:', error);
+                    });
             } else {
-                alert("Eres un burrazo. Vuelve a intentarlo y saca más de 8");
+                mostrarMensajeBurrazo();
             }
             descargarCSVUsuario();
         }, 4000); // Mostrar la respuesta correcta durante 4 segundos
@@ -669,6 +675,23 @@ function actualizarConteo() {
     }
 }
 
+function mostrarMensajeBurrazo() {
+    const mensajeBurrazo = document.createElement('div');
+    mensajeBurrazo.innerHTML = `
+        <div id="burrazo-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+            <div style="background: #fff; padding: 20px; border-radius: 8px; text-align: center; max-width: 500px; width: 100%;">
+                <h2 style="color: #e74c3c;">¡Eres un burrazo!</h2>
+                <p>Lo siento, no alcanzaste la puntuación mínima de 8. Vuelve a intentarlo y saca más de 8.</p>
+                <button id="close-burrazo" style="background: #e74c3c; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Intentar de nuevo</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(mensajeBurrazo);
+    
+    document.getElementById('close-burrazo').addEventListener('click', () => {
+        document.getElementById('burrazo-modal').remove();
+    });
+}
 
 function setConteo() {
     _totalQuestion.textContent = totalQuestion;
@@ -703,21 +726,31 @@ function descargarCSVUsuario() {
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", `respuestas_usuario_${username}.csv`);
-    document.body.appendChild(link); 
+    document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 }
 
-function generarDiploma() {
+function fetchImageAsBase64(url) {
+    return fetch(url)
+        .then(response => response.blob())
+        .then(blob => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        }));
+}
+
+function generarDiploma(logoBase64) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('landscape'); // Orientación horizontal
 
     const username = _usernameInput.value.trim();
     const score = `${correctScore} / ${totalQuestion}`;
 
-    // Agregar un placeholder para el logo
-    doc.setFontSize(16);
-    doc.text("Logo Placeholder", 20, 20);
+    // Agregar logo
+    doc.addImage(logoBase64, 'PNG', 20, 10, 40, 40); // Ajusta las coordenadas y el tamaño según sea necesario
 
     // Título del diploma
     doc.setFontSize(30);
@@ -731,7 +764,7 @@ function generarDiploma() {
     doc.text(`${username}`, 148, 80, null, null, "center");
 
     doc.setFontSize(18);
-    doc.text(`Por haber obtenido una excelente calificación en el cuestionario de Java`, 148, 100, null, null, "center");
+    doc.text(`Por haber completado el cuestionario de Java`, 148, 100, null, null, "center");
 
     doc.setFontSize(18);
     doc.text(`Con una puntuación de: ${score}`, 148, 120, null, null, "center");
@@ -751,4 +784,3 @@ function generarDiploma() {
 
     doc.save(`certificado_${username}.pdf`);
 }
-
