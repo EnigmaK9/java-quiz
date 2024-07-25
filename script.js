@@ -315,10 +315,22 @@ const preguntas = [
     },
     // Pregunta 50
     {
-        pregunta: "Relaciona las características de los tipos de variables en Java:\n a) Variable local\n b) Variable de instancia\n c) Variable estática",
-        respuestas: ["a - 2; b - 3; c - 1", "a - 3; b - 1; c - 2", "a - 1; b - 2; c - 3", "a - 3; b - 2; c - 1"],
+        pregunta: "Relaciona las características de los tipos de variables en Java:\n" +
+                "a) Variable local\n" +
+                "b) Variable de instancia\n" +
+                "c) Variable estática\n\n" +
+                "1) Declarada como static, pertenece a la clase y no a las instancias, compartida por todas las instancias.\n" +
+                "2) Declarada dentro de un método, su valor es accesible solo dentro de ese método.\n" +
+                "3) Declarada dentro de una clase pero fuera de cualquier método, su valor es accesible para cualquier método de la clase.",
+        respuestas: [
+            "a - 2; b - 3; c - 1", 
+            "a - 3; b - 1; c - 2", 
+            "a - 1; b - 2; c - 3", 
+            "a - 3; b - 2; c - 1"
+        ],
         correcta: "a - 2; b - 3; c - 1"
     },
+
     // Pregunta 51
     {
         pregunta: "¿Cuáles son los grupos de tipos de datos en Java?",
@@ -473,7 +485,7 @@ const preguntas = [
     },
     // Pregunta 76
     {
-        pregunta: "Teniendo en un arreglo un conjunto de años indica la forma de imprimir el valor 200:\n int[] año = {198, 199, 200, 201, 202};\n System.out.println(año[2]);",
+        pregunta: "Teniendo en un arreglo un conjunto de años indica la forma de imprimir el valor 200:\n int[] año = {198, 199, 200, 201, 202};",
         respuestas: ["System.out.println(año[2]);", "System.out.println(año[3]);", "System.out.println(año[1]);", "System.out.println(año[4]);"],
         correcta: "System.out.println(año[2]);"
     },
@@ -512,6 +524,12 @@ const preguntas = [
         pregunta: "Indica los tipos de operadores en Java.",
         respuestas: ["Operadores aritméticos, operadores relacionales, operadores lógicos, operadores de asignación, operadores unarios, y operadores bit a bit.", "Operadores aritméticos, operadores relacionales, operadores lógicos, operadores de asignación, operadores de comparación, y operadores bit a bit.", "Operadores aritméticos, operadores lógicos, operadores de asignación, operadores de comparación, y operadores bit a bit.", "Operadores aritméticos, operadores relacionales, operadores lógicos, operadores de asignación, operadores unarios, y operadores condicionales."],
         correcta: "Operadores aritméticos, operadores relacionales, operadores lógicos, operadores de asignación, operadores unarios, y operadores bit a bit."
+    },
+    // Pregunta 83
+    {
+        pregunta: "¿Qué es la sobrecarga de métodos en Java?",
+        respuestas: ["La capacidad de una clase para reemplazar un método heredado de otra clase.", "La capacidad de una clase para tener múltiples métodos con el mismo nombre pero diferentes parámetros.", "La capacidad de una clase para tener múltiples métodos con diferentes nombres pero con el mismo conjunto de parametros.", "La capacidad de una clase para tener múltiples constructores."],
+        correcta: "La capacidad de una clase para tener múltiples métodos con el mismo nombre pero diferentes parámetros."
     }
 ];
 
